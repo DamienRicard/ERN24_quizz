@@ -90,16 +90,20 @@ function afficherQuestion() {
  
     const label = document.createElement('label');
     label.textContent = option;
- 
+    const divQuestion = document.createElement('div');
+    divQuestion.id = 'question';
+
     // Ajout des éléments input et label au formulaire
-    form.appendChild(input);
-    form.appendChild(label);
+    divQuestion.appendChild(input);
+    divQuestion.appendChild(label);
+    form.appendChild(divQuestion);
   });
  
   // Création du bouton de validation
   const submitButton = document.createElement('input');
   submitButton.type = 'submit';
   submitButton.value = 'Valider';
+  submitButton.id = 'btnValider'
  
   // Ajout du bouton de validation au formulaire
   form.appendChild(submitButton);
