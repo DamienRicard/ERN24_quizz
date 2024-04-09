@@ -66,96 +66,93 @@ let score = 0;
 const nbrQuestions = questions.length;
 
 
-
-// -----------------------------------Fonction pour afficher la question actuelle et recceuillir la réponse   ---------------------------------------------------------------------------
+ 
+//function pour afficher la question actuelle et receuillir la réponse
 function afficherQuestion() {
-  //obtenir la première question du tableau et la supprimer une fois la réponse trouvée
-  const currentQuestion = questions.shift(); //shift supprime le 1er élément du tableau(donc la 1ere question)
-
-  //on affiche la question et les options de réponses
-  //const reponseUtilisateur = prompt(`${currentQuestion.questions}\n)${currentQuestion.options.join("\n")}`)    // \n fait un retour à la ligne
-  //sélection de l'élément avec l'ID "card"
-  const cardDiv = document.getElementById("card");
-
-  //création de l'élément p contenant le texte de la question
-  const questionP = document.createElement("p");
-  questionP.textContent = currentQuestion.questions;
-
-  //----- création du formulaire avec l'ID "quizForm" -----
-  const form = document.createElement("form");
-  form.id = "quizForm";
-
-  //----- dans une boucle on crée les options de réponse ------
-  currentQuestion.options.forEach((option, index) => {
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.name = "answer";
-
-    const label = document.createElement("label");
-    label.textContent = questions;
-
-    //----- Ajout des éléments input et label au formulaire -----
+  // Obtenir et supprimer la première question du tableau
+  const currentQuestion = questions.shift();
+  // Sélection de l'élément avec l'ID "card"
+  const cardDiv = document.getElementById('card');
+ 
+  // Création de l'élément p contenant le texte de la question
+  const questionParagraph = document.createElement('p');
+  questionParagraph.textContent = currentQuestion.questions;
+ 
+  // Création du formulaire avec l'ID "quizForm"
+  const form = document.createElement('form');
+  form.id = 'quizForm';
+ 
+  //dans une boucle on crée les options de réponse
+  currentQuestion.options.forEach((option) => {
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'answer';
+ 
+    const label = document.createElement('label');
+    label.textContent = option;
+ 
+    // Ajout des éléments input et label au formulaire
     form.appendChild(input);
     form.appendChild(label);
   });
-
-  //----- création du bouton de validation -----
-  const submitButton = document.createElement("input");
-  submitButton.type = "submit";
-  submitButton.value = "Valider";
-
-  //----- Ajout du bouton de validation au formulaire -----
+ 
+  // Création du bouton de validation
+  const submitButton = document.createElement('input');
+  submitButton.type = 'submit';
+  submitButton.value = 'Valider';
+ 
+  // Ajout du bouton de validation au formulaire
   form.appendChild(submitButton);
-
-  //----- Ajout de l'élément p et du formulaire à l'élément div "card" -----
-  cardDiv.appendChild(questionP);   // OU (questionP)     ?????????????????????????????????????????????????????????
+ 
+  // Ajout de l'élément p et du formulaire à l'élément div "card"
+  cardDiv.appendChild(questionParagraph);
   cardDiv.appendChild(form);
-
-  //----- Ajouter un écouteur d'évènement pour le formulaire -----
-  document
-    .getElementById("quizForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
-    });
-
-  //----- on vérifie la réponse de l'utilisateur -----
-  if (reponseUtilisateur === currentQuestion.answer) {              //reponseUtilisateur is not defined
-    alert("Bonne réponse !");
-    score++;
-  } else {
-    alert(`Mauvaise réponse! La bonne réponse est : ${currentQuestion.answer}`);
-  }
-
-  //----- on vérifie s'il reste des questions -----
-  if (questions.length > 0) {
-    afficherQuestion();
-  } else {
-    finDePartie();
-  }
+ 
+  // Ajouter un écouteur d'événement pour le formulaire
+  document.getElementById('quizForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const selectedAnswer = document.querySelector('input[name=answer]:checked');
+    if (!selectedAnswer) {
+      alert("Veuillez sélectionner une réponse.");
+      return;
+    }
+    const userAnswer = selectedAnswer.nextSibling.textContent;
+    if (userAnswer === currentQuestion.answer) {
+      alert("Bonne réponse!");
+      //on vide card
+      cardDiv.innerHTML = '';
+      score++;
+    } else {
+      alert(`Mauvaise réponse! La bonne réponse est: ${currentQuestion.answer}`);
+      //on vide card
+      cardDiv.innerHTML = '';
+    }
+    selectedAnswer.checked = false;
+    if (questions.length > 0) {
+      afficherQuestion();
+    } else {
+      finDePartie();
+    }
+  });
 }
-
-
-
-
-//-------------------------------------------- Fonction pour gérer la fin de partie-------------------------------------------------------
+//fonction pour gérer la fin de partie
 function finDePartie() {
   alert(`Fin de partie! Votre score est de ${score}/${nbrQuestions}`);
 }
-
-//----- création d'un bouton pour commencer le jeu -----
-
-let startButton = document.getElementById("start");
-startButton.addEventListener("click", afficherQuestion);
-let button = document.createElement("button");
+ 
+//création d'un bouton pour commencer le jeu
+let startButton = document.getElementById('start');
+startButton.addEventListener('click', afficherQuestion);
+let button = document.createElement('button');
 button.innerHTML = "Commencer le jeu";
 startButton.appendChild(button);
-
-//----- création du bouton pour recharger le jeu -----
-let reloadButton = document.getElementById("reload");
-reloadButton.addEventListener("click", () => {
-  location.reload(); //permet au navigateur de recharger
-});
-
-let button2 = document.createElement("button");
+ 
+//création du bouton pour recharger le jeu
+let reloadButton = document.getElementById('reload');
+reloadButton.addEventListener('click', () => {
+  location.reload();
+})
+ 
+let button2 = document.createElement('button');
 button2.innerHTML = "Rejouer";
 reloadButton.appendChild(button2);
